@@ -2,9 +2,9 @@ package net.student.studentportal.repository;
 
 import net.student.studentportal.entity.StudentEntry;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.rest.core.annotation.RepositoryRestResource;
+import org.springframework.stereotype.Repository;
 
-@RepositoryRestResource
-public interface StudentRepository extends JpaRepository<StudentEntry , Long> {
-
+@Repository
+public interface StudentRepository extends JpaRepository<StudentEntry, Long> {
+    // No extra code needed, JpaRepository provides CRUD methods
 }
