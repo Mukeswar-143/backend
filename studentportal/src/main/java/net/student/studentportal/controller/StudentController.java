@@ -1,6 +1,5 @@
 package net.student.studentportal.controller;
 
-
 import net.student.studentportal.entity.StudentEntry;
 import net.student.studentportal.repository.StudentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,63 +9,60 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("Student")
+@RequestMapping("/Student")
+@CrossOrigin(origins = "http://localhost:3000")  // Allow React app to access API
 public class StudentController {
-    @CrossOrigin
+
+    @Autowired
+    private StudentRepository studentRepository;
+
+    // Test endpoint
     @GetMapping("/hello")
-    public String Student(){
+    public String hello() {
         return "hi to all";
     }
-    @Autowired
-    private StudentRepository StudentRepository;
 
+    // Get all students
     @GetMapping("/details")
     public List<StudentEntry> getAllStudents() {
-        return StudentRepository.findAll();
+        return studentRepository.findAll();
     }
 
+    // Create new student
     @PostMapping("/entry")
     public StudentEntry createStudent(@RequestBody StudentEntry student) {
-        return StudentRepository.save(student);
+        return studentRepository.save(student);
     }
 
-    @GetMapping("/{my_id}")
-    public StudentEntry getEntryById(@PathVariable Long my_id) {
-        return StudentRepository.findById(my_id).orElse(null);
+    // Get student by ID
+    @GetMapping("/{id}")
+    public StudentEntry getStudentById(@PathVariable Long id) {
+        return studentRepository.findById(id).orElse(null);
     }
 
-    @DeleteMapping("/{id}")
-    public String deleteEntryById(@PathVariable Long id) {
-        StudentRepository.deleteById(id);
-        return "Person with ID " + id + " has been deleted.";
-    }
-
+    // Update student by ID
     @PutMapping("/{id}")
-    public StudentEntry updateEntryById(@PathVariable Long id, @RequestBody StudentEntry updatedPerson) {
-        Optional<StudentEntry> optionalPerson = StudentRepository.findById(id);
-        if (optionalPerson.isPresent()) {
-            StudentEntry existingPerson = optionalPerson.get();
-            existingPerson.setName(updatedPerson.getName());
-            existingPerson.setGender(updatedPerson.getGender());
-            existingPerson.setNatonality(updatedPerson.getNatonality());
-            existingPerson.setAadhaarnumber(updatedPerson.getAadhaarnumber());
-            existingPerson.setPhone_number(updatedPerson.getPhone_number());
-            existingPerson.setEmail(updatedPerson.getEmail());
-            existingPerson.setAddress(updatedPerson.getAddress());
-            return StudentRepository.save(existingPerson);
+    public StudentEntry updateStudentById(@PathVariable Long id, @RequestBody StudentEntry updatedStudent) {
+        Optional<StudentEntry> optionalStudent = studentRepository.findById(id);
+        if (optionalStudent.isPresent()) {
+            StudentEntry existingStudent = optionalStudent.get();
+            existingStudent.setName(updatedStudent.getName());
+            existingStudent.setGender(updatedStudent.getGender());
+            existingStudent.setNatonality(updatedStudent.getNatonality());
+            existingStudent.setAadhaarnumber(updatedStudent.getAadhaarnumber());
+            existingStudent.setPhone_number(updatedStudent.getPhone_number());
+            existingStudent.setEmail(updatedStudent.getEmail());
+            existingStudent.setAddress(updatedStudent.getAddress());
+            return studentRepository.save(existingStudent);
         } else {
-            return null;
+            return null;  // Or throw exception if preferred
         }
     }
 
+    // Delete student by ID
+    @DeleteMapping("/{id}")
+    public String deleteStudentById(@PathVariable Long id) {
+        studentRepository.deleteById(id);
+        return "Student with ID " + id + " has been deleted.";
+    }
 }
-//{
-//        "id": 1,
-//        "name": "mukesh",
-//        "gender": "male",
-//        "natonality": "hindu",
-//        "aadhaarnumber": 624134154336,
-//        "phone_number": 8074137300,
-//        "email": "vasanamukeswar@gmail.com",
-//        "address": "Vijayawada"
-//        }
