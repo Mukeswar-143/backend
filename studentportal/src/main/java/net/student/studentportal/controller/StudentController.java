@@ -38,20 +38,18 @@ public class StudentController {
     }
 
     @PutMapping("/{id}")
-    public StudentEntry updateEntryById(@PathVariable Long id, @RequestBody StudentEntry updatedStudent) {
-        Optional<StudentEntry> optionalStudent = StudentRepository.findById(id);
-        if (optionalStudent.isPresent()) {
-            StudentEntry existingStudent = optionalStudent.get();
-
-            existingStudent.setName(updatedStudent.getName());
-            existingStudent.setGender(updatedStudent.getGender());
-            existingStudent.setNatonality(updatedStudent.getNatonality()); // Typo in "nationality"?
-            existingStudent.setAadhaarnumber(updatedStudent.getAadhaarnumber());
-            existingStudent.setPhone_number(updatedStudent.getPhone_number());
-            existingStudent.setEmail(updatedStudent.getEmail());
-            existingStudent.setAddress(updatedStudent.getAddress());
-
-            return StudentRepository.save(existingStudent);
+    public StudentEntry updateEntryById(@PathVariable Long id, @RequestBody StudentEntry updatedPerson) {
+        Optional<StudentEntry> optionalPerson = StudentRepository.findById(id);
+        if (optionalPerson.isPresent()) {
+            StudentEntry existingPerson = optionalPerson.get();
+            existingPerson.setName(updatedPerson.getName());
+            existingPerson.setGender(updatedPerson.getGender());
+            existingPerson.setNatonality(updatedPerson.getNatonality());
+            existingPerson.setAadhaarnumber(updatedPerson.getAadhaarnumber());
+            existingPerson.setPhone_number(updatedPerson.getPhone_number());
+            existingPerson.setEmail(updatedPerson.getEmail());
+            existingPerson.setAddress(updatedPerson.getAddress());
+            return StudentRepository.save(existingPerson);
         } else {
             return null;
         }
