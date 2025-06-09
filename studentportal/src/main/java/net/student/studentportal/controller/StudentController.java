@@ -10,9 +10,13 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/Student")
+@RequestMapping("Student")
 public class StudentController {
-
+    @CrossOrigin
+    @GetMapping("/hello")
+    public String Student(){
+        return "hi to all";
+    }
     @Autowired
     private StudentRepository StudentRepository;
 
