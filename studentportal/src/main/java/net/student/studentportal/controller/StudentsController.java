@@ -12,7 +12,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/Students")
-@CrossOrigin(origins = "http://localhost:3000")  // React frontend origin
+//@CrossOrigin(origins = "http://localhost:3000")  // React frontend origin
 public class StudentsController {
 
     @Autowired
