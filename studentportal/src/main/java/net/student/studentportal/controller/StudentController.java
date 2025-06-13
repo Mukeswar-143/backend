@@ -34,6 +34,7 @@ public class StudentController {
         return studentRepository.findById(id).orElse(null);
     }
 
+    
     @PutMapping("/{id}")
     public ResponseEntity<StudentEntity> updateStudentById(
             @PathVariable Long id,
