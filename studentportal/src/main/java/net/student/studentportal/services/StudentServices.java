@@ -5,6 +5,7 @@ import net.student.studentportal.repository.StudentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -18,25 +19,37 @@ public class StudentServices {
         return studentRepository.save(student);
     }
 
+    public List<StudentEntity> getAllStudents() {
+        return studentRepository.findAll();
+    }
+
+    public Optional<StudentEntity> getStudentById(Long id) {
+        return studentRepository.findById(id);
+    }
+
     public Optional<StudentEntity> updateStudentMarks(Long id, StudentEntity updatedStudent) {
-        Optional<StudentEntity> optionalStudent = studentRepository.findById(id);
+        return studentRepository.findById(id).map(existing -> {
+            existing.setRollno(updatedStudent.getRollno());
+            existing.setName(updatedStudent.getName());
+            existing.setSclass(updatedStudent.getSclass());
+            existing.setTelugu(updatedStudent.getTelugu());
+            existing.setHindi(updatedStudent.getHindi());
+            existing.setEnglish(updatedStudent.getEnglish());
+            existing.setMaths(updatedStudent.getMaths());
+            existing.setScience(updatedStudent.getScience());
+            existing.setSocial(updatedStudent.getSocial());
 
-        if (optionalStudent.isPresent()) {
-            StudentEntity existingStudent = optionalStudent.get();
+            calculateTotalAndAverage(existing);
+            return studentRepository.save(existing);
+        });
+    }
 
-            existingStudent.setTelugu(updatedStudent.getTelugu());
-            existingStudent.setHindi(updatedStudent.getHindi());
-            existingStudent.setEnglish(updatedStudent.getEnglish());
-            existingStudent.setMaths(updatedStudent.getMaths());
-            existingStudent.setScience(updatedStudent.getScience());
-            existingStudent.setSocial(updatedStudent.getSocial());
-
-            calculateTotalAndAverage(existingStudent);
-
-            return Optional.of(studentRepository.save(existingStudent));
-        } else {
-            return Optional.empty();
+    public boolean deleteStudent(Long id) {
+        if (studentRepository.existsById(id)) {
+            studentRepository.deleteById(id);
+            return true;
         }
+        return false;
     }
 
     private void calculateTotalAndAverage(StudentEntity student) {
@@ -53,9 +66,9 @@ public class StudentServices {
 
             student.setTotalMarks(total);
             student.setAverageMarks(average);
-
         } catch (NumberFormatException e) {
-            throw new IllegalArgumentException("Marks must be numeric strings", e);
+            student.setTotalMarks(0);
+            student.setAverageMarks(0.0);
         }
     }
 }
