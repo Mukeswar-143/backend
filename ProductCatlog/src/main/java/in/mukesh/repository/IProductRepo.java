@@ -8,6 +8,10 @@ import in.mukesh.entity.ProductEntity;
 
 @Repository
 public interface IProductRepo extends JpaRepository<ProductEntity, Long> {
-	
+
 	public ProductEntity findByPid(Long pid);
+
+	public ProductEntity deleteByPid(Long pid);
+
+	public boolean existsByPid(Long pid);
 }
