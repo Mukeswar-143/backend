@@ -4,7 +4,9 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import in.mukesh.entity.ProductEntity;
@@ -17,9 +19,10 @@ public class ProductService {
     @Autowired
     private IProductRepo pRepo;
 
-    public void saveProduct(ProductEntity productEntity) {
+    public String saveProduct(ProductEntity productEntity) {
         pRepo.save(productEntity);
-    }
+        return "success";
+        }
 
     public ProductEntity getByPid(Long pid) {
         return pRepo.findByPid(pid);
@@ -28,11 +31,29 @@ public class ProductService {
     public List<ProductEntity> getAll() {
         return pRepo.findAll();
     }
+    
+    public List<ProductEntity> getProducts(String category, String sortBy, String direction, Integer page, Integer size) {
+        if (page == null || size == null) {
+            if (category != null && !category.trim().isEmpty()) {
+                return pRepo.findByCategoryIgnoreCase(category);
+            } else {
+                return pRepo.findAll();
+            }
+        }
+        Sort sort = (sortBy != null && direction != null)
+                ? Sort.by(Sort.Direction.fromString(direction), sortBy)
+                : Sort.unsorted();
 
-    public Page<ProductEntity> getProductsByCategory(String category, Pageable pageable) {
-        return pRepo.findByCategory(category, pageable);
+        Pageable pageable = PageRequest.of(page, size, sort);
+
+        if (category != null && !category.trim().isEmpty()) {
+            return pRepo.findByCategoryIgnoreCase(category, pageable).getContent();
+        } else {
+            return pRepo.findAll(pageable).getContent();
+        }
     }
 
+    
     public Page<ProductEntity> getAllProducts(Pageable pageable) {
         return pRepo.findAll(pageable);
     }

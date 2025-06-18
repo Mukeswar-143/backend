@@ -2,6 +2,8 @@ package in.mukesh.repository;
 
 
 
+import java.util.List;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -21,5 +23,7 @@ public interface IProductRepo extends JpaRepository<ProductEntity, Long> {
 
 	public boolean existsByPid(Long pid);
 
-	Page<ProductEntity> findByCategory(String category, Pageable pageable);
+	List<ProductEntity> findByCategoryIgnoreCase(String category);
+
+    Page<ProductEntity> findByCategoryIgnoreCase(String category, Pageable pageable);
 }
