@@ -26,4 +26,5 @@ public interface IProductRepo extends JpaRepository<ProductEntity, Long> {
 	List<ProductEntity> findByCategoryIgnoreCase(String category);
 
     Page<ProductEntity> findByCategoryIgnoreCase(String category, Pageable pageable);
+    
 }

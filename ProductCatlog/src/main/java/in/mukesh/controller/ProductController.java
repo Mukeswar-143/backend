@@ -3,6 +3,7 @@ package in.mukesh.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,7 +16,7 @@ import in.mukesh.service.ProductService;
 @RestController
 @RequestMapping("/product")
 @CrossOrigin(origins = {
-        "http://localhost:3000",
+        "http://localhost:3000/products",
         "https://productcatalog-beta.vercel.app"
 })
 public class ProductController {
@@ -49,22 +50,33 @@ public class ProductController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
     }
-    
-    @GetMapping("/getProducts")
-    public ResponseEntity<List<ProductEntity>> getProducts(
-            @RequestParam(required = false) String category,
-            @RequestParam(required = false) String sortBy,
-            @RequestParam(required = false) String direction,
-            @RequestParam(required = false) Integer page,
-            @RequestParam(required = false) Integer size) {
-        try {
-            List<ProductEntity> products = pService.getProducts(category, sortBy, direction, page, size);
-            return ResponseEntity.ok(products);
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        }
-    }
+//    
+//    @GetMapping("/getProducts")
+//    public ResponseEntity<List<ProductEntity>> getProducts(
+//            @RequestParam(required = false) String category,
+//            @RequestParam(required = false) String sortBy,
+//            @RequestParam(required = false) String direction,
+//            @RequestParam(required = false) Integer page,
+//            @RequestParam(required = false) Integer size) {
+//        try {
+//            List<ProductEntity> products = pService.getProducts(category, sortBy, direction, page, size);
+//            return ResponseEntity.ok(products);
+//        } catch (Exception e) {
+//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+//        }
+//    }
 
+
+    @GetMapping("/getProducts")
+    public ResponseEntity<Page<ProductEntity>> getProducts(
+            @RequestParam(required = false) String category,
+            @RequestParam(defaultValue = "price") String sortBy,
+            @RequestParam(defaultValue = "asc") String direction,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "5") int size) {
+        Page<ProductEntity> products = pService.getProducts(category, sortBy, direction, page, size);
+        return ResponseEntity.ok(products);
+    }
 
     @DeleteMapping("/deleteProductById/{pid}")
     public ResponseEntity<String> deleteProductByPid(@PathVariable Long pid) {

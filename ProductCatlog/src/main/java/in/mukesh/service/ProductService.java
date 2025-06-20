@@ -32,27 +32,38 @@ public class ProductService {
         return pRepo.findAll();
     }
     
-    public List<ProductEntity> getProducts(String category, String sortBy, String direction, Integer page, Integer size) {
-        if (page == null || size == null) {
-            if (category != null && !category.trim().isEmpty()) {
-                return pRepo.findByCategoryIgnoreCase(category);
-            } else {
-                return pRepo.findAll();
-            }
-        }
-        Sort sort = (sortBy != null && direction != null)
-                ? Sort.by(Sort.Direction.fromString(direction), sortBy)
-                : Sort.unsorted();
+//    public List<ProductEntity> getProducts(String category, String sortBy, String direction, Integer page, Integer size) {
+//        if (page == null || size == null) {
+//            if (category != null && !category.trim().isEmpty()) {
+//                return pRepo.findByCategoryIgnoreCase(category);
+//            } else {
+//                return pRepo.findAll();
+//            }
+//        }
+//        Sort sort = (sortBy != null && direction != null)
+//                ? Sort.by(Sort.Direction.fromString(direction), sortBy)
+//                : Sort.unsorted();
+//
+//        Pageable pageable = PageRequest.of(page, size, sort);
+//
+//        if (category != null && !category.trim().isEmpty()) {
+//            return pRepo.findByCategoryIgnoreCase(category, pageable).getContent();
+//        } else {
+//            return pRepo.findAll(pageable).getContent();
+//        }
+//    }
 
+
+    public Page<ProductEntity> getProducts(String category, String sortBy, String direction, int page, int size) {
+        Sort sort = direction.equalsIgnoreCase("desc") ? Sort.by(sortBy).descending() : Sort.by(sortBy).ascending();
         Pageable pageable = PageRequest.of(page, size, sort);
 
-        if (category != null && !category.trim().isEmpty()) {
-            return pRepo.findByCategoryIgnoreCase(category, pageable).getContent();
+        if (category != null && !category.isEmpty()) {
+            return pRepo.findByCategoryIgnoreCase(category, pageable);
         } else {
-            return pRepo.findAll(pageable).getContent();
+            return pRepo.findAll(pageable);
         }
     }
-
     
     public Page<ProductEntity> getAllProducts(Pageable pageable) {
         return pRepo.findAll(pageable);
