@@ -73,6 +73,7 @@ public class ProductService {
     public boolean deleteProductByPid(Long pid) {
         ProductEntity product = pRepo.findByPid(pid);
         if (product != null) {
+        	
             pRepo.delete(product);
             return true;
         }

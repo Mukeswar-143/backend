@@ -17,7 +17,7 @@ import in.mukesh.service.ProductService;
 @RequestMapping("/product")
 @CrossOrigin(origins = {
         "http://localhost:3000/products",
-        "https://productcatalog-beta.vercel.app"
+        "https://shopverse-beta.vercel.app"
 })
 public class ProductController {
 
