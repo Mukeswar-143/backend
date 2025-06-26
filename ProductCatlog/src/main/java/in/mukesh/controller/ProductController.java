@@ -16,7 +16,7 @@ import in.mukesh.service.ProductService;
 @RestController
 @RequestMapping("/product")
 @CrossOrigin(origins = {
-        "http://localhost:3000/products",
+        "http://localhost:3000",
         "https://shopverse-beta.vercel.app"
 })
 public class ProductController {
@@ -50,22 +50,22 @@ public class ProductController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
     }
-//    
-//    @GetMapping("/getProducts")
-//    public ResponseEntity<List<ProductEntity>> getProducts(
-//            @RequestParam(required = false) String category,
-//            @RequestParam(required = false) String sortBy,
-//            @RequestParam(required = false) String direction,
-//            @RequestParam(required = false) Integer page,
-//            @RequestParam(required = false) Integer size) {
-//        try {
-//            List<ProductEntity> products = pService.getProducts(category, sortBy, direction, page, size);
-//            return ResponseEntity.ok(products);
-//        } catch (Exception e) {
-//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-//        }
-//    }
-
+    //
+    // @GetMapping("/getProducts")
+    // public ResponseEntity<List<ProductEntity>> getProducts(
+    // @RequestParam(required = false) String category,
+    // @RequestParam(required = false) String sortBy,
+    // @RequestParam(required = false) String direction,
+    // @RequestParam(required = false) Integer page,
+    // @RequestParam(required = false) Integer size) {
+    // try {
+    // List<ProductEntity> products = pService.getProducts(category, sortBy,
+    // direction, page, size);
+    // return ResponseEntity.ok(products);
+    // } catch (Exception e) {
+    // return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+    // }
+    // }
 
     @GetMapping("/getProducts")
     public ResponseEntity<Page<ProductEntity>> getProducts(

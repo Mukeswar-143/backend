@@ -10,19 +10,19 @@ import in.mukesh.service.UserService;
 
 @RestController
 public class UserController {
-	
+
 	@Autowired
 	private UserService uService;
-	
+
 	@PostMapping("/register")
 	public Users register(@RequestBody Users user) {
 		uService.register(user);
 		return user;
 	}
-	
+
 	@PostMapping("/login")
 	public String login(@RequestBody Users user) {
-		
+
 		return uService.verify(user);
 	}
 }
