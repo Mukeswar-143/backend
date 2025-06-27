@@ -33,7 +33,7 @@ public class SecurityConfig {
         		.cors(Customizer.withDefaults())
         		.csrf(customizer -> customizer.disable()).authorizeHttpRequests(request -> request
                 .requestMatchers("/login", "/register").permitAll()
-                .requestMatchers("/product/**").authenticated()
+                .requestMatchers("/product/**","/product/entry").authenticated()
                 .anyRequest().authenticated()).httpBasic(Customizer.withDefaults())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)

@@ -1,7 +1,7 @@
 package in.mukesh.service;
 
 import in.mukesh.entity.UserPrincipal;
-import in.mukesh.entity.Users;
+import in.mukesh.entity.Userss;
 import in.mukesh.repository.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -18,7 +18,7 @@ public class MyUserDetailService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Users user = userRepo.findByUsername(username);
+        Userss user = userRepo.findByUsername(username);
         if (user == null) {
             System.out.println("User Not Found");
             throw new UsernameNotFoundException("user not found");

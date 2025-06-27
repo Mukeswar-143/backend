@@ -5,8 +5,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
 @Entity
-
-public class Users {
+public class Userss {
     @Id
     private int id;
     private String username;
